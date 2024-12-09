@@ -19,13 +19,13 @@
       <v-alert class="mb-3" border="top" color="success" dark
         >I'm an alert with a top border and success color</v-alert
       >
-      <v-alert class="mb-3" border="right" color="info" dark
+      <v-alert class="mb-3" border="end" color="info" dark
         >I'm an alert with a right border and info color</v-alert
       >
       <v-alert class="mb-3" border="bottom" color="success" dark
         >I'm an alert with a bottom border and success color</v-alert
       >
-      <v-alert border="left" color="info" dark
+      <v-alert border="start" color="info" dark
         >I'm an alert with a border left type info</v-alert
       >
     </div>
