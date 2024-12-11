@@ -1,21 +1,26 @@
+// index.js
+
 import { createRouter, createWebHistory } from "vue-router";
-import AuthView from "../views/AuthView.vue";
+import LoginView from "@/views/LoginView.vue";
+import AuthView from "@/views/RegisterView.vue";
+import FullLayout from "@/layouts/full/FullLayout.vue";
+import Dashboard from "@/views/dashboard/Dashboard.vue";
 
 const router = createRouter({
-  //history: createWebHistory(import.meta.env.BASE_URL),
   history: createWebHistory("/"),
   routes: [
-    { path: "/", name: "Auth", component: AuthView },
+    { path: "/", name: "Login", component: LoginView },
+    { path: "/register", name: "Register", component: AuthView },
     {
       path: "/",
-      redirect: "/dashboard",
-      component: () => import("@/layouts/full/FullLayout.vue"),
+      component: FullLayout,
       children: [
         {
           name: "Dashboard",
-          path: "/dashboard",
-          component: () => import("@/views/dashboard/Dashboard.vue"),
+          path: "dashboard",
+          component: Dashboard,
         },
+        // Additional routes...
         {
           name: "Alerts",
           path: "ui-components/alert",
