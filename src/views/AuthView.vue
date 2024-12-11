@@ -3,16 +3,18 @@
     <h1>Register Form</h1>
     <form @submit.prevent="register" class="register-form">
       <div class="form-group">
+        <label for="user_type">User Type:</label>
+        <select id="user_type" v-model="form.user_type" @change="updateForm">
+          <option value="" disabled selected>Select user type</option>
+          <option value="patient">Patient</option>
+          <option value="medical_staff">Medical Staff</option>
+        </select>
+      </div>
+
+      <!-- Common Fields -->
+      <div class="form-group">
         <label for="name">Name:</label>
         <input type="text" id="name" v-model="form.name" required />
-      </div>
-      <div class="form-group">
-        <label for="age">Age:</label>
-        <input type="number" id="age" v-model="form.age" required />
-      </div>
-      <div class="form-group">
-        <label for="gender">Gender:</label>
-        <input type="text" id="gender" v-model="form.gender" required />
       </div>
       <div class="form-group">
         <label for="contact_information">Contact Information:</label>
@@ -23,6 +25,33 @@
           required
         />
       </div>
+
+      <!-- Patient Fields -->
+      <div v-if="form.user_type === 'patient'">
+        <div class="form-group">
+          <label for="age">Age:</label>
+          <input type="number" id="age" v-model="form.age" required />
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender:</label>
+          <select id="gender" v-model="form.gender" required>
+            <option value="" disabled selected>Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Medical Staff Fields -->
+      <div v-if="form.user_type === 'medical_staff'">
+        <div class="form-group">
+          <label for="specialty">Specialty:</label>
+          <input type="text" id="specialty" v-model="form.specialty" required />
+        </div>
+      </div>
+
       <button type="submit" class="btn-submit">Register</button>
     </form>
   </div>
@@ -35,24 +64,34 @@ export default {
   data() {
     return {
       form: {
+        user_type: "",
         name: "",
+        contact_information: "",
         age: "",
         gender: "",
-        contact_information: "",
+        specialty: "",
       },
     };
   },
   methods: {
     async register() {
+      let tableName =
+        this.form.user_type === "patient" ? "patients" : "medicalstaff";
       const { data, error } = await supabase
-        .from("patients")
+        .from(tableName)
         .insert([this.form]);
+
       if (error) {
         console.error("Error registering:", error);
       } else {
         console.log("Registered successfully:", data);
         // Reset the form or handle success accordingly
       }
+    },
+    updateForm() {
+      this.form.age = "";
+      this.form.gender = "";
+      this.form.specialty = "";
     },
   },
 };
@@ -89,7 +128,8 @@ label {
   color: #555;
 }
 
-input {
+input,
+select {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ddd;
@@ -100,7 +140,8 @@ input {
   transition: border-color 0.3s;
 }
 
-input:focus {
+input:focus,
+select:focus {
   border-color: #007bff;
   outline: none;
 }
