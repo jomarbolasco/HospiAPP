@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.47.3",
     "apexcharts": "^3.35.0",
     "vue": "^3.2.31",
     "vue-feather": "^2.0.0",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^6.5.95",
+    "@rollup/plugin-alias": "^5.1.1",
     "@rushstack/eslint-patch": "^1.1.0",
     "@types/node": "^16.11.25",
     "@vitejs/plugin-vue": "^2.2.2",

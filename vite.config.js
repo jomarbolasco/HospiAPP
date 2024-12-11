@@ -4,6 +4,8 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
+import alias from "@rollup/plugin-alias";
+import path from "path";
 
 // dotenv.config();
 
@@ -12,7 +14,18 @@ export default defineConfig({
   define: {
     "process.env": {},
   },
-  plugins: [vue(), vueDevTools()],
+  plugins: [
+    vue(),
+    vueDevTools(),
+    alias({
+      entries: [
+        {
+          find: "@",
+          replacement: fileURLToPath(new URL("./src", import.meta.url)),
+        },
+      ],
+    }),
+  ],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -20,4 +33,3 @@ export default defineConfig({
   },
   base: "/",
 });
-//i dont know how but the deployment fixed
