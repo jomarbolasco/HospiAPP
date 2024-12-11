@@ -9,8 +9,10 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.47.3",
     "apexcharts": "^3.35.0",
     "vue": "^3.2.31",
+    "vue-feather": "^2.0.0",
     "vue-instantsearch": "^4.3.3",
     "vue-router": "^4.0.12",
     "vue3-apexcharts": "^1.4.1",
@@ -18,9 +20,10 @@
   },
   "devDependencies": {
     "@mdi/font": "^6.5.95",
+    "@rollup/plugin-alias": "^5.1.1",
     "@rushstack/eslint-patch": "^1.1.0",
     "@types/node": "^16.11.25",
-    "@vitejs/plugin-vue": "^2.2.2",
+    "@vitejs/plugin-vue": "^2.3.4",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^10.0.0",
     "@vue/tsconfig": "^0.1.3",
@@ -30,8 +33,8 @@
     "prettier": "^2.5.1",
     "sass": "^1.49.9",
     "sass-loader": "^10.0.0",
-    "typescript": "~4.5.5",
     "vite": "^6.0.3",
+    "vite-plugin-vue-devtools": "^7.6.7",
     "vue-cli-plugin-vuetify": "~2.4.8",
     "vue-tsc": "^0.31.4",
     "vuetify-loader": "^2.0.0-alpha.9"

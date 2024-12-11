@@ -1,7 +1,7 @@
 <template>
   <div class="logo">
     <RouterLink to="/">
-      <img src="../../../assets/images/logos/logo-dark.svg" />
+      <img src="/src/assets/image/logoname.png" width="200" />
     </RouterLink>
   </div>
 </template>
