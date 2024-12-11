@@ -1,5 +1,12 @@
 <script>
 import { supabase } from "@/components/util/supabase"; // Adjust the path based on your project structure
+import {
+  isEmpty,
+  requiredValidator,
+  emailValidator,
+  passwordValidator,
+  integerValidator,
+} from "@/components/util/validators"; // Adjust the path based on your project structure
 
 export default {
   data() {
@@ -14,6 +21,7 @@ export default {
         gender: "",
         specialty_id: "",
       },
+      errors: {},
       specialties: [],
     };
   },
@@ -33,13 +41,26 @@ export default {
 
     // Handle the user registration process
     async register() {
-      try {
-        // Validate email format
-        if (!this.form.email || !/\S+@\S+\.\S+/.test(this.form.email)) {
-          alert("Please enter a valid email address.");
-          return;
-        }
+      this.errors = {};
 
+      // Validate all fields before submission
+      this.validateField("email");
+      this.validateField("password");
+      this.validateField("name");
+      this.validateField("contact_information");
+      if (this.form.user_type === "patient") {
+        this.validateField("age");
+        this.validateField("gender");
+      } else {
+        this.validateField("specialty_id");
+      }
+
+      // If there are any errors, do not proceed with the submission
+      if (Object.keys(this.errors).length > 0) {
+        return;
+      }
+
+      try {
         // Attempt to sign up the user using email and password
         const { data: signUpData, error: signUpError } =
           await supabase.auth.signUp({
@@ -113,6 +134,40 @@ export default {
       this.form.gender = "";
       this.form.specialty_id = "";
     },
+
+    // Validate individual fields
+    validateField(field) {
+      switch (field) {
+        case "email":
+          this.errors.email = emailValidator(this.form.email) || "";
+          break;
+        case "password":
+          this.errors.password = passwordValidator(this.form.password) || "";
+          break;
+        case "name":
+          this.errors.name = requiredValidator(this.form.name) || "";
+          break;
+        case "contact_information":
+          this.errors.contact_information =
+            requiredValidator(this.form.contact_information) || "";
+          break;
+        case "age":
+          this.errors.age =
+            requiredValidator(this.form.age) ||
+            integerValidator(this.form.age) ||
+            "";
+          break;
+        case "gender":
+          this.errors.gender = requiredValidator(this.form.gender) || "";
+          break;
+        case "specialty_id":
+          this.errors.specialty_id =
+            requiredValidator(this.form.specialty_id) || "";
+          break;
+        default:
+          break;
+      }
+    },
   },
 };
 </script>
@@ -130,18 +185,39 @@ export default {
 
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" v-model="form.email" required />
+        <input
+          type="email"
+          id="email"
+          v-model="form.email"
+          required
+          @input="validateField('email')"
+        />
+        <span v-if="errors.email">{{ errors.email }}</span>
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="form.password" required />
+        <input
+          type="password"
+          id="password"
+          v-model="form.password"
+          required
+          @input="validateField('password')"
+        />
+        <span v-if="errors.password">{{ errors.password }}</span>
       </div>
 
       <!-- Patient Fields (Default) -->
       <div v-if="form.user_type === 'patient'">
         <div class="form-group">
           <label for="name">Name:</label>
-          <input type="text" id="name" v-model="form.name" required />
+          <input
+            type="text"
+            id="name"
+            v-model="form.name"
+            required
+            @input="validateField('name')"
+          />
+          <span v-if="errors.name">{{ errors.name }}</span>
         </div>
         <div class="form-group">
           <label for="contact_information">Contact Information:</label>
@@ -150,21 +226,38 @@ export default {
             id="contact_information"
             v-model="form.contact_information"
             required
+            @input="validateField('contact_information')"
           />
+          <span v-if="errors.contact_information">{{
+            errors.contact_information
+          }}</span>
         </div>
         <div class="form-group">
           <label for="age">Age:</label>
-          <input type="number" id="age" v-model="form.age" required />
+          <input
+            type="number"
+            id="age"
+            v-model="form.age"
+            required
+            @input="validateField('age')"
+          />
+          <span v-if="errors.age">{{ errors.age }}</span>
         </div>
         <div class="form-group">
           <label for="gender">Gender:</label>
-          <select id="gender" v-model="form.gender" required>
+          <select
+            id="gender"
+            v-model="form.gender"
+            required
+            @change="validateField('gender')"
+          >
             <option value="" disabled selected>Select gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
             <option value="Prefer not to say">Prefer not to say</option>
           </select>
+          <span v-if="errors.gender">{{ errors.gender }}</span>
         </div>
       </div>
 
@@ -172,7 +265,14 @@ export default {
       <div v-if="form.user_type === 'medical_staff'">
         <div class="form-group">
           <label for="name">Name:</label>
-          <input type="text" id="name" v-model="form.name" required />
+          <input
+            type="text"
+            id="name"
+            v-model="form.name"
+            required
+            @input="validateField('name')"
+          />
+          <span v-if="errors.name">{{ errors.name }}</span>
         </div>
         <div class="form-group">
           <label for="contact_information">Contact Information:</label>
@@ -181,11 +281,20 @@ export default {
             id="contact_information"
             v-model="form.contact_information"
             required
+            @input="validateField('contact_information')"
           />
+          <span v-if="errors.contact_information">{{
+            errors.contact_information
+          }}</span>
         </div>
         <div class="form-group">
           <label for="specialty_id">Specialty:</label>
-          <select id="specialty_id" v-model="form.specialty_id" required>
+          <select
+            id="specialty_id"
+            v-model="form.specialty_id"
+            required
+            @change="validateField('specialty_id')"
+          >
             <option value="" disabled selected>Select specialty</option>
             <option
               v-for="specialty in specialties"
@@ -195,6 +304,7 @@ export default {
               {{ specialty.name }}
             </option>
           </select>
+          <span v-if="errors.specialty_id">{{ errors.specialty_id }}</span>
         </div>
       </div>
 
