@@ -4,11 +4,25 @@
     <form @submit.prevent="login" class="login-form">
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" v-model="form.email" required />
+        <input
+          type="email"
+          id="email"
+          v-model="form.email"
+          @input="validateField('email')"
+          required
+        />
+        <span v-if="errors.email" class="error">{{ errors.email }}</span>
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="form.password" required />
+        <input
+          type="password"
+          id="password"
+          v-model="form.password"
+          @input="validateField('password')"
+          required
+        />
+        <span v-if="errors.password" class="error">{{ errors.password }}</span>
       </div>
       <button type="submit" class="btn-submit">Login</button>
     </form>
@@ -17,6 +31,11 @@
 
 <script>
 import { supabase } from "@/components/util/supabase"; // Adjust the path based on your project structure
+import {
+  emailValidator,
+  requiredValidator,
+  passwordValidator,
+} from "@/components/util/validators"; // Adjust the path based on your project structure
 
 export default {
   data() {
@@ -25,14 +44,36 @@ export default {
         email: "",
         password: "",
       },
+      errors: {
+        email: "",
+        password: "",
+      },
     };
   },
   methods: {
+    validateField(field) {
+      if (field === "email") {
+        this.errors.email = emailValidator(this.form.email);
+      }
+      if (field === "password") {
+        this.errors.password = passwordValidator(this.form.password);
+      }
+      if (!this.errors.email) {
+        this.errors.email = requiredValidator(this.form.email);
+      }
+      if (!this.errors.password) {
+        this.errors.password = requiredValidator(this.form.password);
+      }
+    },
     async login() {
       try {
-        // Validate email format
-        if (!this.form.email || !/\S+@\S+\.\S+/.test(this.form.email)) {
-          alert("Please enter a valid email address.");
+        // Validate fields
+        this.validateField("email");
+        this.validateField("password");
+
+        // If there are errors, stop the login process
+        if (this.errors.email || this.errors.password) {
+          alert("Please fix the validation errors.");
           return;
         }
 
@@ -126,5 +167,11 @@ input:focus {
 
 .btn-submit:hover {
   background-color: #0056b3;
+}
+
+.error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 5px;
 }
 </style>

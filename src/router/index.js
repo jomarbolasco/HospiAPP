@@ -2,7 +2,7 @@
 
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "@/views/LoginView.vue";
-import AuthView from "@/views/AuthView.vue";
+import AuthView from "@/views/RegisterView.vue";
 import FullLayout from "@/layouts/full/FullLayout.vue";
 import Dashboard from "@/views/dashboard/Dashboard.vue";
 
