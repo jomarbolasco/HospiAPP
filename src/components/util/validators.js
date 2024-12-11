@@ -150,3 +150,10 @@ export const imageValidator = (value) => {
     "Image size should be less than 2 MB"
   );
 };
+// 👉 Contact Information Validator
+export const contactInformationValidator = (value) => {
+  if (isEmpty(value)) return true;
+
+  const re = /^[0-9]+$/;
+  return re.test(String(value)) || "The contact information must be numeric.";
+};

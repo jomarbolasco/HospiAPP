@@ -1,11 +1,11 @@
 <script>
 import { supabase } from "@/components/util/supabase"; // Adjust the path based on your project structure
 import {
-  isEmpty,
   requiredValidator,
   emailValidator,
   passwordValidator,
   integerValidator,
+  contactInformationValidator,
 } from "@/components/util/validators"; // Adjust the path based on your project structure
 
 export default {
@@ -149,7 +149,7 @@ export default {
           break;
         case "contact_information":
           this.errors.contact_information =
-            requiredValidator(this.form.contact_information) || "";
+            contactInformationValidator(this.form.contact_information) || "";
           break;
         case "age":
           this.errors.age =
@@ -171,6 +171,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="register-container">
     <h1>Register Form</h1>
