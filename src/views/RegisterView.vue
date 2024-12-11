@@ -1,90 +1,3 @@
-<template>
-  <div class="register-container">
-    <h1>Register Form</h1>
-    <form @submit.prevent="register" class="register-form">
-      <div class="form-group">
-        <label for="user_type">User Type:</label>
-        <select id="user_type" v-model="form.user_type" @change="updateForm">
-          <option value="patient">Patient</option>
-          <option value="medical_staff">Medical Staff</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="form.email" required />
-      </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="form.password" required />
-      </div>
-
-      <!-- Patient Fields (Default) -->
-      <div v-if="form.user_type === 'patient'">
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" id="name" v-model="form.name" required />
-        </div>
-        <div class="form-group">
-          <label for="contact_information">Contact Information:</label>
-          <input
-            type="text"
-            id="contact_information"
-            v-model="form.contact_information"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="age">Age:</label>
-          <input type="number" id="age" v-model="form.age" required />
-        </div>
-        <div class="form-group">
-          <label for="gender">Gender:</label>
-          <select id="gender" v-model="form.gender" required>
-            <option value="" disabled selected>Select gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-            <option value="Prefer not to say">Prefer not to say</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Medical Staff Fields -->
-      <div v-if="form.user_type === 'medical_staff'">
-        <div class="form-group">
-          <label for="name">Name:</label>
-          <input type="text" id="name" v-model="form.name" required />
-        </div>
-        <div class="form-group">
-          <label for="contact_information">Contact Information:</label>
-          <input
-            type="text"
-            id="contact_information"
-            v-model="form.contact_information"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="specialty_id">Specialty:</label>
-          <select id="specialty_id" v-model="form.specialty_id" required>
-            <option value="" disabled selected>Select specialty</option>
-            <option
-              v-for="specialty in specialties"
-              :key="specialty.id"
-              :value="specialty.id"
-            >
-              {{ specialty.name }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <button type="submit" class="btn-submit">Register</button>
-    </form>
-  </div>
-</template>
-
 <script>
 import { supabase } from "@/components/util/supabase"; // Adjust the path based on your project structure
 
@@ -203,7 +116,92 @@ export default {
   },
 };
 </script>
+<template>
+  <div class="register-container">
+    <h1>Register Form</h1>
+    <form @submit.prevent="register" class="register-form">
+      <div class="form-group">
+        <label for="user_type">User Type:</label>
+        <select id="user_type" v-model="form.user_type" @change="updateForm">
+          <option value="patient">Patient</option>
+          <option value="medical_staff">Medical Staff</option>
+        </select>
+      </div>
 
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" v-model="form.email" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" v-model="form.password" required />
+      </div>
+
+      <!-- Patient Fields (Default) -->
+      <div v-if="form.user_type === 'patient'">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" v-model="form.name" required />
+        </div>
+        <div class="form-group">
+          <label for="contact_information">Contact Information:</label>
+          <input
+            type="text"
+            id="contact_information"
+            v-model="form.contact_information"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="age">Age:</label>
+          <input type="number" id="age" v-model="form.age" required />
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender:</label>
+          <select id="gender" v-model="form.gender" required>
+            <option value="" disabled selected>Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Medical Staff Fields -->
+      <div v-if="form.user_type === 'medical_staff'">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" v-model="form.name" required />
+        </div>
+        <div class="form-group">
+          <label for="contact_information">Contact Information:</label>
+          <input
+            type="text"
+            id="contact_information"
+            v-model="form.contact_information"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="specialty_id">Specialty:</label>
+          <select id="specialty_id" v-model="form.specialty_id" required>
+            <option value="" disabled selected>Select specialty</option>
+            <option
+              v-for="specialty in specialties"
+              :key="specialty.id"
+              :value="specialty.id"
+            >
+              {{ specialty.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">Register</button>
+    </form>
+  </div>
+</template>
 <style scoped>
 .register-container {
   max-width: 600px;
